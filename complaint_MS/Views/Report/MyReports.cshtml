@@ -1,0 +1,62 @@
+﻿@* ============================================================
+   Report/MyReports.cshtml
+   ============================================================ *@
+@model IEnumerable<complaint_MS.Models.IncidentReport>
+@{
+    ViewData["Title"] = "My Complaints";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-semibold mb-0">My Complaints</h5>
+    <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">Total: @Model.Count()</span>
+        <a asp-action="Submit" class="btn btn-sm btn-primary">+ New Report</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td class="text-muted small align-middle">@r.DateFiled.ToString("MMM dd, yyyy")</td>
+                        <td class="align-middle fw-medium">@r.Title</td>
+                        <td class="align-middle">
+                            @{
+                                var catName = System.Text.RegularExpressions.Regex.Replace(r.Category.ToString(), "([a-z])([A-Z])", "$1 $2");
+                            }
+                            <span class="badge rounded-pill cat-@r.Category.ToString().ToLower()">@catName</span>
+                        </td>
+                        <td class="align-middle">
+                            <div class="d-flex gap-2">
+                                <a asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-outline-secondary">View</a>
+                                <form asp-action="Delete" asp-route-id="@r.Id" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this complaint?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            No reports yet. <a asp-action="Submit">Submit your first report →</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

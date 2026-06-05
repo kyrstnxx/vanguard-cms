@@ -1,0 +1,82 @@
+﻿@* ============================================================
+   Report/Submit.cshtml
+   ============================================================ *@
+@model complaint_MS.Models.SubmitReportViewModel
+@{
+    ViewData["Title"] = "Submit Complaint";
+}
+
+@* Member standing banner *@
+<div class="card mb-4 p-3 d-flex flex-row align-items-center gap-3" style="border-left: 4px solid #1A7A42;">
+    <div style="width:40px;height:40px;background:#E6F4EC;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-size:1.2rem">✓</span>
+    </div>
+    <div>
+        <strong>Member Standing:</strong>
+        <span class="text-muted"> Your account is in good standing. You are permitted to submit new complaints.</span>
+    </div>
+</div>
+
+<div class="card">
+    <div class="section-header">
+        <h5 class="mb-0 fw-semibold text-white">Submit a New Complaint</h5>
+        <p>Please provide details and any supporting evidence for your report.</p>
+    </div>
+    <div class="p-4">
+        <form asp-action="Submit" asp-controller="Report" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="alert alert-danger" style="display:@(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Title" class="form-label small text-muted text-uppercase">Subject</label>
+                    <input asp-for="Title" class="form-control" placeholder="e.g. Broken street light on Rizal Ave" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Category" class="form-label small text-muted text-uppercase">Category</label>
+                    <select asp-for="Category" class="form-select">
+                        <option value="">-- Select a Category --</option>
+                        @foreach (var cat in Enum.GetValues<complaint_MS.Models.IncidentCategory>())
+                        {
+                            var spacedCat = System.Text.RegularExpressions.Regex.Replace(cat.ToString(), "([a-z])([A-Z])", "$1 $2");
+                            <option value="@cat">@spacedCat</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Description" class="form-label small text-muted text-uppercase">Details</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"
+                              placeholder="Provide a brief summary of the incident..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Location" class="form-label small text-muted text-uppercase">Location</label>
+                    <input asp-for="Location" class="form-control" placeholder="Street address or landmark" />
+
+                    <label asp-for="Photo" class="form-label small text-muted text-uppercase mt-3">Upload photos or evidence</label>
+                    <div class="upload-zone" onclick="document.getElementById('photoInput').click()">
+                        <div>☁ Upload or drag and drop images</div>
+                        <div class="small text-muted">JPG, PNG (Max 5MB)</div>
+                        <div class="small text-muted mt-1" id="fileName"></div>
+                    </div>
+                    <input type="file" id="photoInput" name="Photo" accept=".jpg,.jpeg,.png" class="d-none"
+                           onchange="document.getElementById('fileName').textContent = this.files[0]?.name ?? ''" />
+                    <span asp-validation-for="Photo" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary w-100 py-2 text-uppercase fw-semibold ls-1">
+                    File Complaint
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

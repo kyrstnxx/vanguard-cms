@@ -1,0 +1,65 @@
+﻿@model complaint_MS.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_Layout";
+}
+
+<div style="width:100%;max-width:440px;margin: 0 auto;">
+    <div style="text-align:center;margin-bottom:2rem">
+        <div style="width:56px;height:56px;background:#1A3D2B;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+            <i class="ti ti-shield-check" style="font-size:28px;color:#fff"></i>
+        </div>
+        <h4 style="font-weight:600;margin-bottom:8px">Sign In</h4>
+        <p style="color:#6b7280;font-size:14px;margin:0">Complaint Management System</p>
+    </div>
+
+    <div style="background:#fff;border:1px solid #e4e4e0;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.02)">
+        <div style="background:#1A3D2B;padding:1rem 1.5rem">
+            <h6 style="color:#fff;margin:0;font-weight:500;font-size:15px">User Login</h6>
+            <p style="color:rgba(255,255,255,.6);font-size:12px;margin:0;margin-top:2px">Please enter your credentials to access your account</p>
+        </div>
+        <div style="padding:2rem 1.75rem">
+            <form asp-action="Login" asp-controller="Account" method="post">
+                @Html.AntiForgeryToken()
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger" style="font-size:13px;padding:.6rem 1rem;margin-bottom:1.5rem">
+                        <div asp-validation-summary="All"></div>
+                    </div>
+                }
+
+                <div style="margin-bottom:1.5rem">
+                    <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:8px">Email Address</label>
+                    <input asp-for="Email" class="form-control form-control-lg" type="email" placeholder="you@example.com" autocomplete="email" style="font-size:14px" />
+                    <span asp-validation-for="Email" class="text-danger" style="font-size:12px"></span>
+                </div>
+
+                <div style="margin-bottom:1.5rem">
+                    <label style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:8px">Password</label>
+                    <input asp-for="Password" class="form-control form-control-lg" type="password" placeholder="••••••••" autocomplete="current-password" style="font-size:14px" />
+                    <span asp-validation-for="Password" class="text-danger" style="font-size:12px"></span>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:1.75rem">
+                    <input asp-for="RememberMe" class="form-check-input" style="margin:0;cursor:pointer" />
+                    <label asp-for="RememberMe" style="font-size:13px;color:#4b5563;cursor:pointer">Remember my device</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" style="padding:.75rem;font-size:15px;font-weight:500;border-radius:8px">
+                    Sign In
+                </button>
+
+                <div style="text-align:center;margin-top:1.5rem;font-size:14px;color:#6b7280">
+                    Don't have an account?
+                    <a asp-action="Register" asp-controller="Account" style="color:#1A3D2B;font-weight:600;text-decoration:none">Register here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

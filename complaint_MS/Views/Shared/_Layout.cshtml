@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] – Complaint MS</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/icons-webfont@@latest/tabler-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        string fullName = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
+                           ?? User.Identity.Name
+                           ?? "User";
+
+        string[] nameParts = fullName.Trim().Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+        string initials = nameParts.Length >= 2
+            ? $"{nameParts[0][0]}{nameParts[nameParts.Length - 1][0]}".ToUpper()
+            : fullName.Substring(0, Math.Min(2, fullName.Length)).ToUpper();
+        string firstName = nameParts.Length > 0 ? nameParts[0] : fullName;
+
+        <div class="app-shell">
+            <aside class="sidebar">
+                <div class="sb-brand" style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 36px; height: 36px; background: rgba(255, 255, 255, 0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="ti ti-shield-check" style="font-size: 22px; color: #fff;"></i>
+                    </div>
+                    <div class="sb-brand-name" style="font-size: 16px; margin: 0;">Complaint MS</div>
+                </div>
+
+                <nav class="sb-nav">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="sb-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Dashboard" ? "active" : "")"
+                               asp-controller="Admin" asp-action="Dashboard">
+                            <i class="ti ti-list"></i><span>All Complaints</span>
+                        </a>
+                        <a class="sb-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Residents" ? "active" : "")"
+                               asp-controller="Admin" asp-action="Residents">
+                            <i class="ti ti-users"></i><span>Residents</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="sb-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                               asp-controller="Home" asp-action="Index">
+                            <i class="ti ti-home"></i><span>Home</span>
+                        </a>
+                        <a class="sb-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Submit" ? "active" : "")"
+                               asp-controller="Report" asp-action="Submit">
+                            <i class="ti ti-edit"></i><span>Submit Complaint</span>
+                        </a>
+                        <a class="sb-item @(ViewContext.RouteData.Values["action"]?.ToString() == "MyReports" || ViewContext.RouteData.Values["action"]?.ToString() == "Details" ? "active" : "")"
+                               asp-controller="Report" asp-action="MyReports">
+                            <i class="ti ti-bell"></i><span>My Complaints</span>
+                        </a>
+                    }
+                </nav>
+
+                <div class="sb-bottom">
+                    <div class="sb-user">
+                        <div class="sb-avatar">@initials</div>
+                        <div class="sb-user-info">
+                            <div class="sb-uname">@firstName</div>
+                            <div class="sb-urole">@(User.IsInRole("Admin") ? "STAFF" : "RESIDENT")</div>
+                        </div>
+                    </div>
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="sb-logout">
+                            <i class="ti ti-logout"></i><span>Logout</span>
+                        </button>
+                    </form>
+                </div>
+            </aside>
+
+            <div class="main-area">
+                <div class="topbar">
+                    <span class="topbar-title">@ViewData["Title"]</span>
+                    <div class="topbar-user">
+                        <div class="topbar-meta">
+                            <div class="topbar-name">@firstName</div>
+                            <div class="topbar-role">@(User.IsInRole("Admin") ? "STAFF" : "RESIDENT")</div>
+                        </div>
+                        <div class="topbar-avatar">@initials</div>
+                    </div>
+                </div>
+
+                <div class="page-content">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                            @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="auth-page">
+            <div class="auth-topbar">
+                <a asp-controller="Account" asp-action="Login" class="auth-brand">
+                    <i class="ti ti-shield-check"></i> Complaint MS
+                </a>
+            </div>
+            <div class="auth-body">
+                @RenderBody()
+            </div>
+        </div>
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

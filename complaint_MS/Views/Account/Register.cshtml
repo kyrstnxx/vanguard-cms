@@ -1,0 +1,86 @@
+﻿@model complaint_MS.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "_Layout";
+}
+
+<div style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:2rem 1rem">
+    <div style="width:100%;max-width:480px">
+
+        <div style="text-align:center;margin-bottom:1.5rem">
+            <div style="width:52px;height:52px;background:#1A3D2B;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+                <i class="ti ti-user-plus" style="font-size:26px;color:#fff"></i>
+            </div>
+            <h5 style="font-weight:600;margin-bottom:4px">Create Account</h5>
+            <p style="color:#9ca3af;font-size:13px;margin:0">Register as a resident to file and track complaints</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #e4e4e0;border-radius:12px;overflow:hidden">
+            <div style="background:#1A3D2B;padding:1rem 1.5rem">
+                <h6 style="color:#fff;margin:0;font-weight:500;font-size:15px">Resident Registration</h6>
+                <p style="color:rgba(255,255,255,.6);font-size:12px;margin:0;margin-top:2px">Create a new account</p>
+            </div>
+            <div style="padding:1.5rem">
+                <form asp-action="Register" asp-controller="Account" method="post">
+                    @Html.AntiForgeryToken()
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger" style="font-size:13px;padding:.6rem 1rem">
+                            <div asp-validation-summary="All"></div>
+                        </div>
+                    }
+
+                    <div style="margin-bottom:1rem">
+                        <label style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Full Name</label>
+                        <input asp-for="FullName" class="form-control" placeholder="e.g. Juan Dela Cruz" style="width:100%" />
+                        <span asp-validation-for="FullName" class="text-danger" style="font-size:12px"></span>
+                    </div>
+
+                    <div style="margin-bottom:1rem">
+                        <label style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Email Address</label>
+                        <input asp-for="Email" class="form-control" type="email" placeholder="you@example.com" style="width:100%" />
+                        <span asp-validation-for="Email" class="text-danger" style="font-size:12px"></span>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
+                        <div>
+                            <label style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Password</label>
+                            <input asp-for="Password" class="form-control" type="password" placeholder="Min. 6 chars" style="width:100%" />
+                            <span asp-validation-for="Password" class="text-danger" style="font-size:12px"></span>
+                        </div>
+                        <div>
+                            <label style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Confirm Password</label>
+                            <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Repeat" style="width:100%" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger" style="font-size:12px"></span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:1.25rem">
+                        <label style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Address <span style="font-weight:400;text-transform:none">(optional)</span></label>
+                        <input asp-for="Address" class="form-control" placeholder="Block/Lot, Street, Barangay" style="width:100%" />
+                    </div>
+
+                    <div style="background:#E6F4EC;border:1px solid #9FE1CB;border-radius:8px;padding:.75rem 1rem;margin-bottom:1.25rem;font-size:12px;color:#0F6E56;display:flex;gap:8px;align-items:flex-start">
+                        <i class="ti ti-info-circle" style="font-size:16px;flex-shrink:0;margin-top:1px"></i>
+                        After registering your account will be in <strong>good standing</strong> and you can immediately submit complaints.
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100" style="padding:.65rem;font-size:14px;font-weight:500">
+                        Create Account
+                    </button>
+
+                    <div style="text-align:center;margin-top:1rem;font-size:13px;color:#9ca3af">
+                        Already have an account?
+                        <a asp-action="Login" asp-controller="Account" style="color:#1A3D2B;font-weight:500">Sign in here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

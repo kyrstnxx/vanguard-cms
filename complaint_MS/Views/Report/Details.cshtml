@@ -1,0 +1,145 @@
+﻿@model complaint_MS.Models.IncidentReport
+@{
+    ViewData["Title"] = "Report Details";
+}
+
+<div class="d-flex align-items-center gap-2 mb-3">
+    <a asp-action="MyReports" class="btn btn-sm btn-outline-secondary">← My Complaints</a>
+    <h5 class="mb-0 fw-semibold">Report #@Model.Id</h5>
+    <span class="badge rounded-pill badge-@Model.Status.ToString().ToLower() ms-1">@Model.Status</span>
+</div>
+
+<div class="row g-4">
+    @* ── LEFT: Report info ── *@
+    <div class="col-md-8">
+        <div class="card p-4 mb-4">
+            <h6 class="fw-semibold mb-3">@Model.Title</h6>
+
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <div class="text-muted small text-uppercase mb-1">Category</div>
+                    @{
+                        var catName = System.Text.RegularExpressions.Regex.Replace(Model.Category.ToString(), "([a-z])([A-Z])", "$1 $2");
+                    }
+                    <span class="badge rounded-pill cat-@Model.Category.ToString().ToLower()">@catName</span>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small text-uppercase mb-1">Date filed</div>
+                    <div class="small">@Model.DateFiled.ToString("MMMM dd, yyyy HH:mm")</div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small text-uppercase mb-1">Location</div>
+                    <div class="small">@(Model.Location ?? "—")</div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small text-uppercase mb-1">Current status</div>
+                    <span class="badge rounded-pill badge-@Model.Status.ToString().ToLower()">@Model.Status</span>
+                </div>
+                @if (Model.AssignedTo != null)
+                {
+                    <div class="col-6">
+                        <div class="text-muted small text-uppercase mb-1">Assigned to</div>
+                        <div class="small">@Model.AssignedTo.FullName</div>
+                    </div>
+                }
+                @if (Model.DateResolved.HasValue)
+                {
+                    <div class="col-6">
+                        <div class="text-muted small text-uppercase mb-1">Date resolved</div>
+                        <div class="small">@Model.DateResolved.Value.ToString("MMMM dd, yyyy")</div>
+                    </div>
+                }
+            </div>
+
+            <div class="text-muted small text-uppercase mb-1">Description</div>
+            <p class="small mb-0" style="line-height:1.6">@Model.Description</p>
+
+            @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+            {
+                <div class="mt-4">
+                    <div class="text-muted small text-uppercase mb-2">Photo evidence</div>
+                    <img src="@Model.PhotoUrl" alt="Evidence photo"
+                         class="img-fluid rounded"
+                         style="max-height:280px; object-fit:cover; border:0.5px solid #e0e0e0;" />
+                </div>
+            }
+        </div>
+
+        @* ── STATUS HISTORY TIMELINE ── *@
+        <div class="card p-4">
+            <h6 class="fw-semibold mb-3">Status history</h6>
+
+            @if (Model.StatusHistories.Any())
+            {
+                @foreach (var h in Model.StatusHistories.OrderBy(x => x.ChangedAt))
+                {
+                    <div class="timeline-item">
+                        <div class="timeline-dot mt-1"></div>
+                        <div>
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <span class="badge rounded-pill badge-@h.NewStatus.ToString().ToLower() fw-medium">
+                                    @h.NewStatus
+                                </span>
+                                <span class="text-muted small">
+                                    @h.ChangedAt.ToString("MMM dd, yyyy · HH:mm")
+                                </span>
+                                @if (h.ChangedBy != null)
+                                {
+                                    <span class="text-muted small">· @h.ChangedBy.FullName</span>
+                                }
+                            </div>
+                            @if (!string.IsNullOrEmpty(h.Remark))
+                            {
+                                <div class="text-muted small mt-1" style="padding-left:2px">@h.Remark</div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted small mb-0">No status updates yet. Your report is being reviewed.</p>
+            }
+        </div>
+    </div>
+
+    @* ── RIGHT: Summary card ── *@
+    <div class="col-md-4">
+        <div class="card">
+            <div class="section-header">
+                <h6 class="mb-0 text-white fw-semibold">Report Summary</h6>
+                <p>Reference: #@Model.Id</p>
+            </div>
+            <div class="p-4">
+                <div class="mb-3">
+                    <div class="text-muted small text-uppercase mb-1">Filed on</div>
+                    <div class="small fw-medium">@Model.DateFiled.ToString("MMMM dd, yyyy")</div>
+                </div>
+                <div class="mb-3">
+                    <div class="text-muted small text-uppercase mb-1">Category</div>
+                    <span class="badge rounded-pill cat-@Model.Category.ToString().ToLower()">@Model.Category</span>
+                </div>
+                <div class="mb-3">
+                    <div class="text-muted small text-uppercase mb-1">Current status</div>
+                    <span class="badge rounded-pill badge-@Model.Status.ToString().ToLower()">@Model.Status</span>
+                </div>
+                @if (Model.DateResolved.HasValue)
+                {
+                    <div class="mb-3">
+                        <div class="text-muted small text-uppercase mb-1">Resolved on</div>
+                        <div class="small fw-medium">@Model.DateResolved.Value.ToString("MMMM dd, yyyy")</div>
+                    </div>
+                }
+                <div class="mb-3">
+                    <div class="text-muted small text-uppercase mb-1">Updates</div>
+                    <div class="small fw-medium">@Model.StatusHistories.Count() status change(s)</div>
+                </div>
+
+                <hr style="border-color:#e0e0e0" />
+
+                <a asp-action="MyReports" class="btn btn-outline-secondary btn-sm w-100 mb-2">← Back to my reports</a>
+                <a asp-action="Submit" class="btn btn-primary btn-sm w-100">+ Submit another report</a>
+            </div>
+        </div>
+    </div>
+</div>

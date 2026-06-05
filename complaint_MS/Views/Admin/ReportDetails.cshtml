@@ -1,0 +1,139 @@
+﻿@model complaint_MS.Models.IncidentReport
+@{
+    ViewData["Title"] = "Report Details";
+    var staffList = ViewBag.StaffList as IList<complaint_MS.Models.ApplicationUser> ?? new List<complaint_MS.Models.ApplicationUser>();
+}
+
+<div class="d-flex align-items-center gap-2 mb-3">
+    <a asp-action="Dashboard" class="btn btn-sm btn-outline-secondary">← Back</a>
+    <h5 class="mb-0 fw-semibold">Report #@Model.Id</h5>
+    <span class="badge rounded-pill badge-@Model.Status.ToString().ToLower() ms-1">@Model.Status</span>
+</div>
+
+<div class="row g-4">
+    @* ── LEFT: Report info ── *@
+    <div class="col-md-7">
+        <div class="card p-4 mb-4">
+            <h6 class="fw-semibold mb-3">@Model.Title</h6>
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <div class="text-muted small text-uppercase mb-1">Category</div>
+                    @{
+                        var catName = System.Text.RegularExpressions.Regex.Replace(Model.Category.ToString(), "([a-z])([A-Z])", "$1 $2");
+                    }
+                    <span class="badge rounded-pill cat-@Model.Category.ToString().ToLower()">@catName</span>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small text-uppercase mb-1">Date filed</div>
+                    <div class="small">@Model.DateFiled.ToString("MMMM dd, yyyy HH:mm")</div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small text-uppercase mb-1">Reporter</div>
+                    <div class="small">@Model.User?.FullName</div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small text-uppercase mb-1">Location</div>
+                    <div class="small">@(Model.Location ?? "—")</div>
+                </div>
+                @if (Model.AssignedTo != null)
+                {
+                    <div class="col-6">
+                        <div class="text-muted small text-uppercase mb-1">Assigned to</div>
+                        <div class="small">@Model.AssignedTo.FullName</div>
+                    </div>
+                }
+                @if (Model.DateResolved.HasValue)
+                {
+                    <div class="col-6">
+                        <div class="text-muted small text-uppercase mb-1">Date resolved</div>
+                        <div class="small">@Model.DateResolved.Value.ToString("MMMM dd, yyyy")</div>
+                    </div>
+                }
+            </div>
+            <div class="text-muted small text-uppercase mb-1">Description</div>
+            <p class="small mb-0">@Model.Description</p>
+
+            @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+            {
+                <div class="mt-3">
+                    <div class="text-muted small text-uppercase mb-1">Photo evidence</div>
+                    <img src="@Model.PhotoUrl" alt="Evidence photo" class="img-fluid rounded" style="max-height:260px;object-fit:cover;" />
+                </div>
+            }
+        </div>
+
+        @* ── STATUS HISTORY ── *@
+        <div class="card p-4">
+            <h6 class="fw-semibold mb-3">Status history</h6>
+            @foreach (var h in Model.StatusHistories.OrderBy(x => x.ChangedAt))
+            {
+                <div class="timeline-item">
+                    <div class="timeline-dot mt-1"></div>
+                    <div>
+                        <span class="fw-medium small">@h.NewStatus</span>
+                        <span class="text-muted small ms-2">@h.ChangedAt.ToString("MMM dd, yyyy HH:mm")</span>
+                        <span class="text-muted small ms-2">· @h.ChangedBy?.FullName</span>
+                        @if (!string.IsNullOrEmpty(h.Remark))
+                        {
+                            <div class="text-muted small mt-1">@h.Remark</div>
+                        }
+                    </div>
+                </div>
+            }
+            @if (!Model.StatusHistories.Any())
+            {
+                <p class="text-muted small mb-0">No history yet.</p>
+            }
+        </div>
+    </div>
+
+    @* ── RIGHT: Update status ── *@
+    <div class="col-md-5">
+        <div class="card">
+            <div class="section-header">
+                <h6 class="mb-0 text-white fw-semibold">Update Status</h6>
+                <p>Change status and add a remark</p>
+            </div>
+            <div class="p-4">
+                <form asp-action="UpdateStatus" asp-controller="Admin" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="reportId" value="@Model.Id" />
+
+                    <div class="mb-3">
+                        <label class="form-label small text-muted text-uppercase">New Status</label>
+                        <select name="newStatus" class="form-select form-select-sm">
+                            @foreach (var s in Enum.GetValues<complaint_MS.Models.ReportStatus>())
+                            {
+                                // Add the space before uppercase letters
+                                var spacedStatus = System.Text.RegularExpressions.Regex.Replace(s.ToString(), "([a-z])([A-Z])", "$1 $2");
+                                <option value="@s" selected="@(Model.Status == s)">@spacedStatus</option>
+                            }
+                        </select>
+                    </div>
+
+                    @if (staffList.Any())
+                    {
+                        <div class="mb-3">
+                            <label class="form-label small text-muted text-uppercase">Assign to</label>
+                            <select name="assignedToUserId" class="form-select form-select-sm">
+                                <option value="">— Unassigned —</option>
+                                @foreach (var staff in staffList)
+                                {
+                                    <option value="@staff.Id" selected="@(Model.AssignedToUserId == staff.Id)">@staff.FullName</option>
+                                }
+                            </select>
+                        </div>
+                    }
+
+                    <div class="mb-3">
+                        <label class="form-label small text-muted text-uppercase">Remark (optional)</label>
+                        <textarea name="remark" class="form-control form-control-sm" rows="3"
+                                  placeholder="Add a note about this status change..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Update Status</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

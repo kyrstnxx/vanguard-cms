@@ -1,41 +1,104 @@
 ﻿@model IList<complaint_MS.Models.ApplicationUser>
 @{
-    ViewData["Title"] = "Residents List";
+    ViewData["Title"] = "Residents";
+    var complaintCounts = ViewBag.ComplaintCounts as Dictionary<string, int> ?? new Dictionary<string, int>();
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="fw-semibold mb-0">Registered Residents</h4>
-    <span class="text-muted small">Total Registered: @Model.Count</span>
+    <span class="text-muted small">Total: @Model.Count</span>
 </div>
 
-<div class="card shadow-sm border-0">
+@* ── SEARCH ── *@
+<form method="get" class="mb-3">
+    <div class="d-flex gap-2">
+        <input type="text" name="search" class="form-control form-control-sm"
+               placeholder="Search by name or email..." value="@ViewBag.Search" style="max-width:280px" />
+        <button type="submit" class="btn btn-sm btn-primary">Search</button>
+        <a href="/Admin/Residents" class="btn btn-sm btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+@* ── DESKTOP TABLE ── *@
+<div class="card d-none d-md-block">
     <div class="table-responsive">
         <table class="table table-hover mb-0">
             <thead class="table-light">
                 <tr>
                     <th class="ps-4">Full Name</th>
                     <th>Email Address</th>
-                    <th>Home Address</th>
+                    <th>Address</th>
+                    <th>Complaints Filed</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var resident in Model)
                 {
+                    var count = complaintCounts.ContainsKey(resident.Id) ? complaintCounts[resident.Id] : 0;
                     <tr>
-                        <td class="align-middle fw-medium ps-4">@resident.FullName</td>
-                        <td class="align-middle text-muted">@resident.Email</td>
-                        <td class="align-middle text-muted">
-                            @(string.IsNullOrEmpty(resident.Address) ? "—" : resident.Address)
+                        <td class="align-middle ps-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="resident-avatar">
+                                    @(resident.FullName.Length >= 2
+                                        ? $"{resident.FullName.Split(' ')[0][0]}{resident.FullName.Split(' ').Last()[0]}".ToUpper()
+                                        : resident.FullName.Substring(0, 1).ToUpper())
+                                </div>
+                                <span class="fw-medium">@resident.FullName</span>
+                            </div>
+                        </td>
+                        <td class="align-middle text-muted small">@resident.Email</td>
+                        <td class="align-middle text-muted small">@(string.IsNullOrEmpty(resident.Address) ? "—" : resident.Address)</td>
+                        <td class="align-middle">
+                            <span class="badge rounded-pill @(count > 0 ? "bg-primary" : "bg-secondary") bg-opacity-10 text-dark">
+                                @count complaint@(count != 1 ? "s" : "")
+                            </span>
                         </td>
                     </tr>
                 }
                 @if (!Model.Any())
                 {
-                    <tr>
-                        <td colspan="3" class="text-center text-muted py-4">No residents have registered yet.</td>
-                    </tr>
+                    <tr><td colspan="4" class="text-center text-muted py-4">No residents have registered yet.</td></tr>
                 }
             </tbody>
         </table>
     </div>
+</div>
+
+@* ── MOBILE CARDS ── *@
+<div class="d-md-none">
+    @if (!Model.Any())
+    {
+        <div class="card p-4 text-center text-muted">No residents have registered yet.</div>
+    }
+    @foreach (var resident in Model)
+    {
+        var count = complaintCounts.ContainsKey(resident.Id) ? complaintCounts[resident.Id] : 0;
+        var parts = resident.FullName.Trim().Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+        var initials = parts.Length >= 2
+            ? $"{parts[0][0]}{parts[parts.Length - 1][0]}".ToUpper()
+            : resident.FullName.Substring(0, Math.Min(2, resident.FullName.Length)).ToUpper();
+
+        <div class="resident-mobile-card card mb-3 p-3">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="resident-avatar-lg">@initials</div>
+                <div style="flex:1;min-width:0">
+                    <div class="fw-semibold" style="font-size:15px">@resident.FullName</div>
+                    <div class="text-muted small text-truncate">@resident.Email</div>
+                </div>
+                <span class="badge rounded-pill" style="background:#E6F4EC;color:#065F46;flex-shrink:0">
+                    @count complaint@(count != 1 ? "s" : "")
+                </span>
+            </div>
+            <div class="resident-card-meta">
+                <div class="resident-meta-row">
+                    <i class="ti ti-map-pin" style="font-size:14px;color:#9ca3af;flex-shrink:0"></i>
+                    <span>@(string.IsNullOrEmpty(resident.Address) ? "No address provided" : resident.Address)</span>
+                </div>
+                <div class="resident-meta-row">
+                    <i class="ti ti-mail" style="font-size:14px;color:#9ca3af;flex-shrink:0"></i>
+                    <span class="text-truncate">@resident.Email</span>
+                </div>
+            </div>
+        </div>
+    }
 </div>

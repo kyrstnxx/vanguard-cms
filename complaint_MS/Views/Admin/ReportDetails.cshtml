@@ -1,12 +1,12 @@
 ﻿@model complaint_MS.Models.IncidentReport
 @{
-    ViewData["Title"] = "Report Details";
+    ViewData["Title"] = "Complaint Details";
     var staffList = ViewBag.StaffList as IList<complaint_MS.Models.ApplicationUser> ?? new List<complaint_MS.Models.ApplicationUser>();
 }
 
 <div class="d-flex align-items-center gap-2 mb-3">
     <a asp-action="Dashboard" class="btn btn-sm btn-outline-secondary">← Back</a>
-    <h5 class="mb-0 fw-semibold">Report #@Model.Id</h5>
+    <h5 class="mb-0 fw-semibold">Complaint #@Model.Id</h5>
     <span class="badge rounded-pill badge-@Model.Status.ToString().ToLower() ms-1">@Model.Status</span>
 </div>
 
@@ -104,7 +104,6 @@
                         <select name="newStatus" class="form-select form-select-sm">
                             @foreach (var s in Enum.GetValues<complaint_MS.Models.ReportStatus>())
                             {
-                                // Add the space before uppercase letters
                                 var spacedStatus = System.Text.RegularExpressions.Regex.Replace(s.ToString(), "([a-z])([A-Z])", "$1 $2");
                                 <option value="@s" selected="@(Model.Status == s)">@spacedStatus</option>
                             }

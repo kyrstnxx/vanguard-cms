@@ -42,9 +42,9 @@ namespace complaint_MS.Controllers
                 Reports = await query.OrderByDescending(r => r.DateFiled).ToListAsync(),
                 FilterStatus = filterStatus,
                 FilterCategory = filterCategory,
-                TotalNew = await _db.IncidentReports.CountAsync(r => r.Status == ReportStatus.New),
-                TotalInProgress = await _db.IncidentReports.CountAsync(r => r.Status == ReportStatus.InProgress),
-                TotalResolved = await _db.IncidentReports.CountAsync(r => r.Status == ReportStatus.Resolved),
+                TotalNew = await _db.IncidentReports.CountAsync(r => r.Status == ReportStatus.New && r.IsDeleted == false),
+                TotalInProgress = await _db.IncidentReports.CountAsync(r => r.Status == ReportStatus.InProgress && r.IsDeleted == false),
+                TotalResolved = await _db.IncidentReports.CountAsync(r => r.Status == ReportStatus.Resolved && r.IsDeleted == false),
             };
 
             return View(vm);
@@ -102,12 +102,37 @@ namespace complaint_MS.Controllers
         }
 
         // GET: /Admin/Residents
-        public async Task<IActionResult> Residents()
+        public async Task<IActionResult> Residents(string search)
         {
-            // Fetch all users assigned to the "Resident" role
-            var residents = await _userManager.GetUsersInRoleAsync("Resident");
+            // 1. Get all admin users safely using the built-in UserManager
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            var adminIds = admins.Select(a => a.Id).ToList();
 
-            // Pass the list to the view
+            // 2. Start the query with all users EXCEPT those admins
+            var usersQuery = _db.Users
+                .Where(u => !adminIds.Contains(u.Id))
+                .AsQueryable();
+
+            // 3. Handle the Search Bar
+            if (!string.IsNullOrEmpty(search))
+            {
+                usersQuery = usersQuery.Where(u =>
+                u.FullName!.Contains(search) ||
+                u.Email!.Contains(search));
+            }
+
+                ViewBag.Search = search;
+
+            // 4. Get the final list of actual residents
+            var residents = await usersQuery.OrderBy(u => u.FullName).ToListAsync();
+
+            // 5. Calculate the "Complaints Filed" count for the badges
+            var complaintCounts = await _db.IncidentReports
+                .GroupBy(r => r.UserId)
+                .ToDictionaryAsync(g => g.Key, g => g.Count());
+
+            ViewBag.ComplaintCounts = complaintCounts;
+
             return View(residents);
         }
 

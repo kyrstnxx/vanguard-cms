@@ -314,45 +314,6 @@ body {
     color: var(--green-mid)
 }
 
-/* ═══════════════ MEMBER BANNER ═══════════════ */
-.member-banner {
-    background: #fff;
-    border: 1px solid #e4e4e0;
-    border-radius: 12px;
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 18px;
-}
-
-.member-banner-icon {
-    width: 42px;
-    height: 42px;
-    background: var(--green-light);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-    .member-banner-icon i {
-        font-size: 22px;
-        color: var(--green-mid)
-    }
-
-.member-banner-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1a1a1a
-}
-
-.member-banner-sub {
-    font-size: 12px;
-    color: #6b7280;
-    margin-top: 2px
-}
 
 /* ═══════════════ CARDS ═══════════════ */
 .card {
@@ -620,7 +581,7 @@ body {
     border-radius: 50rem;
     font-size: 11px;
     letter-spacing: 0.05em;
-    color: #111; 
+    color: #111;
 }
 
 /* Specific Category Colors */
@@ -647,10 +608,159 @@ body {
 }
 
 .cat-sports {
-    background: #FFD8A8; 
+    background: #FFD8A8;
 }
 
 .cat-other {
     background: #F1EFE8;
     color: #5F5E5A;
+}
+
+/* ═══════════════ MOBILE REPORT CARDS ═══════════════ */
+.report-card {
+    border-radius: 12px;
+    border: 1px solid #e4e4e0;
+    transition: box-shadow .15s;
+}
+
+    .report-card:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+
+.report-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: #6b7280;
+    background: #fafaf8;
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+.meta-label {
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: .05em;
+    margin-right: 4px;
+}
+
+/* ═══════════════ RESIDENT AVATAR ═══════════════ */
+.resident-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #E6F4EC;
+    color: #1A3D2B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.resident-avatar-lg {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #E6F4EC;
+    color: #1A3D2B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/* ═══════════════ RESIDENT MOBILE CARD ═══════════════ */
+.resident-mobile-card {
+    border-radius: 12px;
+    border: 1px solid #e4e4e0;
+}
+
+.resident-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: #fafaf8;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.resident-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+}
+
+/* ═══════════════ MOBILE SIDEBAR ADJUSTMENTS ═══════════════ */
+@media (max-width: 768px) {
+    /* Sidebar collapses to icon-only strip */
+    :root {
+        --sidebar-w: 58px;
+    }
+
+    .sb-brand-name,
+    .sb-brand-sub,
+    .sb-item span,
+    .sb-uname,
+    .sb-urole,
+    .sb-logout span {
+        display: none;
+    }
+
+    .sb-item {
+        justify-content: center;
+        padding: 12px 0;
+    }
+
+    .sb-user {
+        justify-content: center;
+        padding: 10px 0;
+    }
+
+    .sb-bottom {
+        padding: 8px 0 14px;
+    }
+
+    .sb-logout {
+        justify-content: center;
+        padding: 10px 0;
+    }
+
+    .page-content {
+        padding: 14px 12px;
+    }
+
+    .topbar {
+        padding: 10px 14px;
+    }
+
+    /* Shrink stat val on small screens */
+    .stat-card .stat-val {
+        font-size: 1.4rem;
+    }
+
+    /* Stack filter row */
+    .d-flex.gap-2.flex-wrap {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+        .d-flex.gap-2.flex-wrap .form-control,
+        .d-flex.gap-2.flex-wrap .form-select {
+            max-width: 100% !important;
+            width: 100%;
+        }
+
+        .d-flex.gap-2.flex-wrap .btn {
+            width: 100%;
+        }
 }

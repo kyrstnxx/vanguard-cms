@@ -53,9 +53,10 @@
                                asp-controller="Report" asp-action="Submit">
                             <i class="ti ti-edit"></i><span>Submit Complaint</span>
                         </a>
-                        <a class="sb-item @(ViewContext.RouteData.Values["action"]?.ToString() == "MyReports" || ViewContext.RouteData.Values["action"]?.ToString() == "Details" ? "active" : "")"
+
+                        <a class="sb-item @(ViewContext.RouteData.Values["action"]?.ToString() == "MyReports" ? "active" : "")"
                                asp-controller="Report" asp-action="MyReports">
-                            <i class="ti ti-bell"></i><span>My Complaints</span>
+                            <i class="ti ti-list"></i><span>My Complaints</span>
                         </a>
                     }
                 </nav>

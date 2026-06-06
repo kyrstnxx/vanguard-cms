@@ -6,24 +6,13 @@
     ViewData["Title"] = "Submit Complaint";
 }
 
-@* Member standing banner *@
-<div class="card mb-4 p-3 d-flex flex-row align-items-center gap-3" style="border-left: 4px solid #1A7A42;">
-    <div style="width:40px;height:40px;background:#E6F4EC;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <span style="font-size:1.2rem">✓</span>
-    </div>
-    <div>
-        <strong>Member Standing:</strong>
-        <span class="text-muted"> Your account is in good standing. You are permitted to submit new complaints.</span>
-    </div>
-</div>
-
 <div class="card">
     <div class="section-header">
         <h5 class="mb-0 fw-semibold text-white">Submit a New Complaint</h5>
-        <p>Please provide details and any supporting evidence for your report.</p>
+        <p>Please provide details and any supporting evidence for your complaint.</p>
     </div>
     <div class="p-4">
-        <form asp-action="Submit" asp-controller="Report" method="post" enctype="multipart/form-data">
+        <form asp-controller="Report" asp-action="Submit" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="All" class="alert alert-danger" style="display:@(ViewData.ModelState.IsValid ? "none" : "block")"></div>
 

@@ -1,7 +1,4 @@
-﻿@* ============================================================
-   Report/MyReports.cshtml
-   ============================================================ *@
-@model IEnumerable<complaint_MS.Models.IncidentReport>
+﻿@model IEnumerable<complaint_MS.Models.IncidentReport>
 @{
     ViewData["Title"] = "My Complaints";
 }
@@ -10,38 +7,37 @@
     <h5 class="fw-semibold mb-0">My Complaints</h5>
     <div class="d-flex align-items-center gap-2">
         <span class="text-muted small">Total: @Model.Count()</span>
-        <a asp-action="Submit" class="btn btn-sm btn-primary">+ New Report</a>
+        <a asp-action="Submit" class="btn btn-sm btn-primary">+ New</a>
     </div>
 </div>
 
-<div class="card">
+@* ── DESKTOP TABLE ── *@
+<div class="card d-none d-md-block">
     <div class="table-responsive">
         <table class="table table-hover mb-0">
             <thead class="table-light">
                 <tr>
-                    <th>Date</th>
-                    <th>Subject</th>
-                    <th>Category</th>
-                    <th>Status</th>
-                    <th></th>
+                    <th class="d-none d-md-table-cell ps-4">DATE</th>
+                    <th>SUBJECT</th>
+                    <th class="d-none d-md-table-cell">CATEGORY</th>
+                    <th>STATUS</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var r in Model)
                 {
+                    var catName = System.Text.RegularExpressions.Regex.Replace(r.Category.ToString(), "([a-z])([A-Z])", "$1 $2");
+                    var statusName = System.Text.RegularExpressions.Regex.Replace(r.Status.ToString(), "([a-z])([A-Z])", "$1 $2");
                     <tr>
-                        <td class="text-muted small align-middle">@r.DateFiled.ToString("MMM dd, yyyy")</td>
+                        <td class="text-muted small align-middle d-none d-md-table-cell ps-4">@r.DateFiled.ToString("MMM dd, yyyy")</td>
                         <td class="align-middle fw-medium">@r.Title</td>
-                        <td class="align-middle">
-                            @{
-                                var catName = System.Text.RegularExpressions.Regex.Replace(r.Category.ToString(), "([a-z])([A-Z])", "$1 $2");
-                            }
-                            <span class="badge rounded-pill cat-@r.Category.ToString().ToLower()">@catName</span>
-                        </td>
-                        <td class="align-middle">
-                            <div class="d-flex gap-2">
+                        <td class="align-middle d-none d-md-table-cell"><span class="badge rounded-pill cat-@r.Category.ToString().ToLower()">@catName</span></td>
+                        <td class="align-middle"><span class="badge rounded-pill badge-@r.Status.ToString().ToLower()">@statusName</span></td>
+                        
+                        <td class="align-middle text-end pe-4">
+                            <div class="d-flex gap-2 justify-content-end">
                                 <a asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-outline-secondary">View</a>
-                                <form asp-action="Delete" asp-route-id="@r.Id" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this complaint?');">
+                                <form asp-action="Delete" asp-route-id="@r.Id" method="post" style="display:inline;" onsubmit="return confirm('Delete this complaint?');">
                                     <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                                 </form>
                             </div>
@@ -50,13 +46,46 @@
                 }
                 @if (!Model.Any())
                 {
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-4">
-                            No reports yet. <a asp-action="Submit">Submit your first report →</a>
-                        </td>
-                    </tr>
+                    <tr><td colspan="5" class="text-center text-muted py-4">No complaints yet. <a asp-action="Submit">Submit your first →</a></td></tr>
                 }
             </tbody>
         </table>
     </div>
+</div>
+
+@* ── MOBILE CARDS ── *@
+<div class="d-md-none">
+    @if (!Model.Any())
+    {
+        <div class="card p-4 text-center text-muted">
+            No complaints yet. <a asp-action="Submit">Submit your first →</a>
+        </div>
+    }
+    @foreach (var r in Model)
+    {
+        var catName = System.Text.RegularExpressions.Regex.Replace(r.Category.ToString(), "([a-z])([A-Z])", "$1 $2");
+        var statusName = System.Text.RegularExpressions.Regex.Replace(r.Status.ToString(), "([a-z])([A-Z])", "$1 $2");
+        <div class="report-card card mb-3 p-3">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="fw-semibold" style="font-size:14px;flex:1;margin-right:8px">@r.Title</span>
+                <span class="badge rounded-pill badge-@r.Status.ToString().ToLower() flex-shrink-0">@statusName</span>
+            </div>
+            <div class="d-flex flex-wrap gap-2 mb-2">
+                <span class="badge rounded-pill cat-@r.Category.ToString().ToLower()">@catName</span>
+            </div>
+            <div class="report-card-meta">
+                <div><span class="meta-label">Date filed</span> @r.DateFiled.ToString("MMM dd, yyyy")</div>
+                @if (!string.IsNullOrEmpty(r.Location))
+                {
+                    <div><span class="meta-label">Location</span> @r.Location</div>
+                }
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                <a asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-outline-secondary flex-fill">View</a>
+                <form asp-action="Delete" asp-route-id="@r.Id" method="post" class="flex-fill" onsubmit="return confirm('Delete this complaint?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger w-100">Delete</button>
+                </form>
+            </div>
+        </div>
+    }
 </div>

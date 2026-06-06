@@ -32,7 +32,7 @@
 
                     <div style="margin-bottom:1rem">
                         <label style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Full Name</label>
-                        <input asp-for="FullName" class="form-control" placeholder="e.g. Juan Dela Cruz" style="width:100%" />
+                        <input asp-for="FullName" class="form-control" style="width:100%" />
                         <span asp-validation-for="FullName" class="text-danger" style="font-size:12px"></span>
                     </div>
 
@@ -45,12 +45,12 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
                         <div>
                             <label style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Password</label>
-                            <input asp-for="Password" class="form-control" type="password" placeholder="Min. 6 chars" style="width:100%" />
+                            <input asp-for="Password" class="form-control" type="password" style="width:100%" />
                             <span asp-validation-for="Password" class="text-danger" style="font-size:12px"></span>
                         </div>
                         <div>
                             <label style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Confirm Password</label>
-                            <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Repeat" style="width:100%" />
+                            <input asp-for="ConfirmPassword" class="form-control" type="password" style="width:100%" />
                             <span asp-validation-for="ConfirmPassword" class="text-danger" style="font-size:12px"></span>
                         </div>
                     </div>

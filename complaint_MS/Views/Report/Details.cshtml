@@ -1,11 +1,11 @@
 ﻿@model complaint_MS.Models.IncidentReport
 @{
-    ViewData["Title"] = "Report Details";
+    ViewData["Title"] = "Complaint Details";
 }
 
 <div class="d-flex align-items-center gap-2 mb-3">
     <a asp-action="MyReports" class="btn btn-sm btn-outline-secondary">← My Complaints</a>
-    <h5 class="mb-0 fw-semibold">Report #@Model.Id</h5>
+    <h5 class="mb-0 fw-semibold">Complaint #@Model.Id</h5>
     <span class="badge rounded-pill badge-@Model.Status.ToString().ToLower() ms-1">@Model.Status</span>
 </div>
 
@@ -98,7 +98,7 @@
             }
             else
             {
-                <p class="text-muted small mb-0">No status updates yet. Your report is being reviewed.</p>
+                <p class="text-muted small mb-0">No status updates yet. Your complaint is being reviewed.</p>
             }
         </div>
     </div>
@@ -107,7 +107,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="section-header">
-                <h6 class="mb-0 text-white fw-semibold">Report Summary</h6>
+                <h6 class="mb-0 text-white fw-semibold">Complaint Summary</h6>
                 <p>Reference: #@Model.Id</p>
             </div>
             <div class="p-4">
@@ -137,8 +137,8 @@
 
                 <hr style="border-color:#e0e0e0" />
 
-                <a asp-action="MyReports" class="btn btn-outline-secondary btn-sm w-100 mb-2">← Back to my reports</a>
-                <a asp-action="Submit" class="btn btn-primary btn-sm w-100">+ Submit another report</a>
+                <a asp-action="MyReports" class="btn btn-outline-secondary btn-sm w-100 mb-2">← Back to my Complaints</a>
+                <a asp-action="Submit" class="btn btn-primary btn-sm w-100">+ Submit another complaint</a>
             </div>
         </div>
     </div>

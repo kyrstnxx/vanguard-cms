@@ -1,16 +1,10 @@
-﻿// ============================================================
-// NEIGHBORHOOD INCIDENT REPORT SYSTEM — EF CORE MODELS
-// ============================================================
-
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace complaint_MS.Models
 {
-    // --------------------------------------------------------
-    // 1. APPLICATION USER (extends ASP.NET Identity)
-    // --------------------------------------------------------
+
     public class ApplicationUser : IdentityUser
     {
         [Required]
@@ -26,9 +20,6 @@ namespace complaint_MS.Models
         public ICollection<IncidentReport> Reports { get; set; } = new List<IncidentReport>();
     }
 
-    // --------------------------------------------------------
-    // 2. INCIDENT REPORT
-    // --------------------------------------------------------
     public enum IncidentCategory
     {
         Infrastructure,
@@ -93,9 +84,6 @@ namespace complaint_MS.Models
         public bool IsDeleted { get; set; } = false;
     }
 
-    // --------------------------------------------------------
-    // 3. STATUS HISTORY (audit trail)
-    // --------------------------------------------------------
     public class StatusHistory
     {
         [Key]
@@ -123,9 +111,6 @@ namespace complaint_MS.Models
         public DateTime ChangedAt { get; set; } = DateTime.UtcNow;
     }
 
-    // ============================================================
-    // VIEW MODELS
-    // ============================================================
 
     public class LoginViewModel
     {

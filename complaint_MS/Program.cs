@@ -30,14 +30,27 @@ using (var scope = app.Services.CreateScope())
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
     foreach (var role in new[] { "Admin", "Resident" })
+    {
         if (!await roleManager.RoleExistsAsync(role))
+        {
             await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
 
-    // Seed Admin
-    await SeedUser(userManager, "System Admin", "admin@complaint.com", "Admin@123", "Admin");
+    // 1. Pull passwords securely from Configuration (Environment Variables or appsettings.json)
+    var adminPassword = app.Configuration["SeedCredentials:AdminPassword"];
+    var residentPassword = app.Configuration["SeedCredentials:ResidentPassword"];
 
-    // Seed test resident
-    await SeedUser(userManager, "Test Resident", "user01@complaint.com", "User@123", "Resident");
+    // 2. Only seed the users if a password was securely found
+    if (!string.IsNullOrEmpty(adminPassword))
+    {
+        await SeedUser(userManager, "System Admin", "admin@complaint.com", adminPassword, "Admin");
+    }
+
+    if (!string.IsNullOrEmpty(residentPassword))
+    {
+        await SeedUser(userManager, "Test Resident", "user01@complaint.com", residentPassword, "Resident");
+    }
 }
 
 app.UseHttpsRedirection();

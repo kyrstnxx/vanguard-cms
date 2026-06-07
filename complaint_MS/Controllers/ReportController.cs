@@ -114,7 +114,6 @@ namespace complaint_MS.Controllers
         {
             var userId = _userManager.GetUserId(User)!;
 
-            // Find the report, ensuring it belongs to the logged-in user
             var report = await _db.IncidentReports
                 .FirstOrDefaultAsync(r => r.Id == id && r.UserId == userId);
 

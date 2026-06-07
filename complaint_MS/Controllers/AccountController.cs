@@ -36,7 +36,6 @@ namespace complaint_MS.Controllers
 
             if (result.Succeeded)
             {
-                // Store FullName as a claim so the layout can read it
                 await _userManager.AddClaimAsync(user, new Claim("FullName", vm.FullName));
                 await _userManager.AddToRoleAsync(user, "Resident");
                 await _signInManager.SignInAsync(user, isPersistent: false);
@@ -64,7 +63,6 @@ namespace complaint_MS.Controllers
                 return View(vm);
             }
 
-            // Ensure FullName claim exists (for existing accounts)
             var existingClaims = await _userManager.GetClaimsAsync(user);
             if (!existingClaims.Any(c => c.Type == "FullName"))
                 await _userManager.AddClaimAsync(user, new Claim("FullName", user.FullName));

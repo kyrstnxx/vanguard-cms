@@ -1,6 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
 
-    // ── Upload zone: drag-and-drop ──
     const zone = document.querySelector('.upload-zone');
     const input = document.getElementById('photoInput');
     const label = document.getElementById('fileName');
@@ -28,14 +27,12 @@
         });
     }
 
-    // ── Auto-dismiss success alerts after 4s ──
     document.querySelectorAll('.alert-dismissible').forEach(function (alert) {
         setTimeout(function () {
             bootstrap.Alert.getOrCreateInstance(alert)?.close();
         }, 4000);
     });
 
-    // ── Mark active sidebar link by current URL ──
     const path = window.location.pathname.toLowerCase();
     document.querySelectorAll('.sb-item').forEach(function (link) {
         const href = link.getAttribute('href')?.toLowerCase();

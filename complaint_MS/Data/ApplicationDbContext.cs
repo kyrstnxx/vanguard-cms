@@ -1,8 +1,4 @@
-﻿// ============================================================
-// ApplicationDbContext.cs
-// ============================================================
-
-using complaint_MS.Models;
+﻿using complaint_MS.Models;
 using complaint_MS.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

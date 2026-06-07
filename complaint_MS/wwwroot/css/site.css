@@ -23,13 +23,13 @@ body {
     --sidebar-w: 220px;
 }
 
-/* ═══════════════ APP SHELL ═══════════════ */
+/* APP SHELL */
 .app-shell {
     display: flex;
     min-height: 100vh
 }
 
-/* ═══════════════ SIDEBAR ═══════════════ */
+/* SIDEBAR */
 .sidebar {
     width: var(--sidebar-w);
     flex-shrink: 0;
@@ -175,7 +175,7 @@ body {
         color: #fff
     }
 
-/* ═══════════════ MAIN AREA ═══════════════ */
+/* MAIN AREA */
 .main-area {
     flex: 1;
     display: flex;
@@ -245,7 +245,7 @@ body {
     flex: 1
 }
 
-/* ═══════════════ HOME ACTION CARDS ═══════════════ */
+/* HOME ACTION CARDS */
 .home-welcome {
     margin-bottom: 20px
 }
@@ -315,7 +315,7 @@ body {
 }
 
 
-/* ═══════════════ CARDS ═══════════════ */
+/* CARDS */
 .card {
     background: #fff;
     border: 1px solid #e4e4e0;
@@ -341,7 +341,7 @@ body {
         margin: 0
     }
 
-/* ═══════════════ BUTTONS ═══════════════ */
+/* BUTTONS */
 .btn-primary {
     background: var(--green-dark);
     border-color: var(--green-dark);
@@ -354,13 +354,13 @@ body {
         color: #fff
     }
 
-/* ═══════════════ FORM ═══════════════ */
+/*FORM */
 .form-control:focus, .form-select:focus {
     border-color: var(--green-dark);
     box-shadow: 0 0 0 3px rgba(26,61,43,.1);
 }
 
-/* ═══════════════ UPLOAD ZONE ═══════════════ */
+/* UPLOAD ZONE */
 .upload-zone {
     border: 1.5px dashed var(--green-mid);
     border-radius: 8px;
@@ -374,7 +374,7 @@ body {
         background: var(--green-light)
     }
 
-/* ═══════════════ STATUS & CATEGORY BADGES ═══════════════ */
+/* STATUS & CATEGORY BADGES */
 .badge-new {
     background: #F1EFE8;
     color: #5F5E5A;
@@ -435,7 +435,7 @@ body {
     color: #5F5E5A
 }
 
-/* ═══════════════ TABLES ═══════════════ */
+/* TABLES */
 .table thead th {
     font-size: 11px;
     font-weight: 600;
@@ -455,7 +455,7 @@ body {
     border-color: #f0f0ee
 }
 
-/* ═══════════════ STAT CARDS ═══════════════ */
+/* STAT CARDS */
 .stat-card {
     background: #fafaf8;
     border-radius: 10px;
@@ -477,7 +477,7 @@ body {
         margin-bottom: 4px
     }
 
-/* ═══════════════ TIMELINE ═══════════════ */
+/* TIMELINE */
 .timeline-item {
     border-top: 1px solid #ebebea;
     padding: .7rem 0;
@@ -499,7 +499,7 @@ body {
     margin-top: 5px
 }
 
-/* ═══════════════ AUTH PAGES ═══════════════ */
+/* AUTH PAGES */
 .auth-page {
     min-height: 100vh;
     background: #f0f0ee;
@@ -541,14 +541,14 @@ body {
     padding: 2rem 1rem
 }
 
-/* ═══════════════ ALERTS ═══════════════ */
+/* ALERTS */
 .alert-success {
     background: var(--green-light);
     border-color: var(--green-border);
     color: #0F6E56
 }
 
-/* ═══════════════ RESPONSIVE ═══════════════ */
+/* RESPONSIVE */
 @media(max-width:768px) {
     :root {
         --sidebar-w: 62px
@@ -573,7 +573,7 @@ body {
     }
 }
 
-/* ═══════════════ CATEGORY BADGES ═══════════════ */
+/* CATEGORY BADGES */
 [class^="cat-"] {
     font-weight: 700;
     text-transform: uppercase;
@@ -584,7 +584,6 @@ body {
     color: #111;
 }
 
-/* Specific Category Colors */
 .cat-financial {
     background: #FDE08B;
     border: 2px solid #0EA5E9;
@@ -616,7 +615,7 @@ body {
     color: #5F5E5A;
 }
 
-/* ═══════════════ MOBILE REPORT CARDS ═══════════════ */
+/* MOBILE REPORT CARDS */
 .report-card {
     border-radius: 12px;
     border: 1px solid #e4e4e0;
@@ -647,7 +646,7 @@ body {
     margin-right: 4px;
 }
 
-/* ═══════════════ RESIDENT AVATAR ═══════════════ */
+/* RESIDENT AVATAR */
 .resident-avatar {
     width: 32px;
     height: 32px;
@@ -676,7 +675,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ═══════════════ RESIDENT MOBILE CARD ═══════════════ */
+/* RESIDENT MOBILE CARD */
 .resident-mobile-card {
     border-radius: 12px;
     border: 1px solid #e4e4e0;
@@ -700,9 +699,8 @@ body {
     overflow: hidden;
 }
 
-/* ═══════════════ MOBILE SIDEBAR ADJUSTMENTS ═══════════════ */
+/* MOBILE SIDEBAR ADJUSTMENTS */
 @media (max-width: 768px) {
-    /* Sidebar collapses to icon-only strip */
     :root {
         --sidebar-w: 58px;
     }

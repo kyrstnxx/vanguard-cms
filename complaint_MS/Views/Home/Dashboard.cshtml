@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+
+    var fullName = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value ?? User.Identity?.Name ?? "Resident";
+    var firstName = fullName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? fullName;
+}
+
+<div class="mb-4 mt-2">
+    <h5 class="fw-semibold mb-0">Welcome, @firstName!</h5>
+    <p class="text-muted small">What would you like to do today?</p>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <a asp-controller="Report" asp-action="Submit" class="home-action-card h-100" style="text-decoration: none; color: inherit; display: block;">
+            <div class="hac-icon" style="background:#E6F4EC">
+                <i class="ti ti-edit" style="color:#1A7A42"></i>
+            </div>
+            <div class="hac-text">
+                <div class="hac-title" style="font-weight: 600;">Add New Complaint</div>
+                <div class="hac-sub" style="color: #6c757d; font-size: 0.85rem;">File a new complaint report to your barangay</div>
+            </div>
+            <i class="ti ti-arrow-right hac-arrow"></i>
+        </a>
+    </div>  
+
+    <div class="col-md-6">
+        <a asp-controller="Report" asp-action="MyReports" class="home-action-card h-100" style="text-decoration: none; color: inherit; display: block;">
+            <div class="hac-icon" style="background:#EEF2FF">
+                <i class="ti ti-list" style="color:#4338CA"></i>
+            </div>
+            <div class="hac-text">
+                <div class="hac-title" style="font-weight: 600;">View My Complaints</div>
+                <div class="hac-sub" style="color: #6c757d; font-size: 0.85rem;">Track and review your submitted complaints</div>
+            </div>
+            <i class="ti ti-arrow-right hac-arrow"></i>
+        </a>
+    </div>
+</div>

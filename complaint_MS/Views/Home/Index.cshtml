@@ -1,40 +1,181 @@
 ﻿@{
     ViewData["Title"] = "Home";
-    Layout = "_Layout";
-
-    var fullName = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value ?? User.Identity?.Name ?? "Resident";
-    var firstName = fullName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? fullName;
+    Layout = null;
 }
 
-<div class="mb-4 mt-2">
-    <h5 class="fw-semibold mb-0">Welcome, @firstName!</h5>
-    <p class="text-muted small">What would you like to do today?</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] – Vanguard CMS</title>
+    
+    <!-- Core Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/icons-webfont@@latest/tabler-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    
+ <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                color: #2b3a42;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+ </style>
+</head>
+<body>
 
-<div class="row g-3">
-    <div class="col-md-6">
-        <a asp-controller="Report" asp-action="Submit" class="home-action-card h-100">
-            <div class="hac-icon" style="background:#E6F4EC">
-                <i class="ti ti-edit" style="color:#1A7A42"></i>
-            </div>
-            <div class="hac-text">
-                <div class="hac-title">Add New Complaint</div>
-                <div class="hac-sub">File a new complaint report to your barangay</div>
-            </div>
-            <i class="ti ti-arrow-right hac-arrow"></i>
-        </a>
-    </div>
+    <main>
+        <!-- 1. HERO SECTION -->
+        <section class="hero-section">
+            <div class="hero-gradient"></div>
+            <div class="container hero-content">
+                <div class="row">
+                    <div class="col-lg-6 py-5">
+                        
+                        <img src="~/images/vanguard-landing.png" alt="Vanguard CMS" height="75" class="mb-4" />
 
-    <div class="col-md-6">
-        <a asp-controller="Report" asp-action="MyReports" class="home-action-card h-100">
-            <div class="hac-icon" style="background:#EEF2FF">
-                <i class="ti ti-list" style="color:#4338CA"></i>
+                        <div>
+                            <span class="badge rounded-pill mb-4 px-3 py-2" style="background-color: #e6f4ea; color: #1e8e3e; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px;">
+                                OFFICIAL PORTAL
+                            </span>
+                        </div>
+
+                        <h1 class="display-4 fw-bold mb-4" style="color: #0b1a12; line-height: 1.15;">
+                            Efficient Governance for Barangay 67.
+                        </h1>
+                        <p class="lead mb-5" style="color: #55695e; max-width: 90%;">
+                            Empowering residents through transparent and responsive complaint management. Your voice matters in building a better community.
+                        </p>
+                        
+                        <div class="d-flex gap-3">
+                            <a href="/Account/Login" class="btn btn-brand-dark px-4 py-2 fw-bold rounded-3">Sign in</a>
+                            <a href="/Account/Register" class="btn btn-brand-outline px-4 py-2 fw-bold rounded-3">Sign up</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="hac-text">
-                <div class="hac-title">View My Complaints</div>
-                <div class="hac-sub">Track and review your submitted complaints</div>
+        </section>
+
+        <!-- 2. CORE VALUES SECTION -->
+        <section class="py-5" style="background-color: #fafcfb;">
+            <div class="container text-center py-5">
+                <h2 class="fw-bold mb-2" style="color: #0b1a12;">Built on Core Values</h2>
+                <p class="mb-5" style="color: #55695e;">Transforming community service through modern technology.</p>
+                
+                <div class="row justify-content-center g-4">
+                    <div class="col-md-5">
+                        <div class="card h-100 p-4 p-lg-5 text-start core-value-card">
+                            <div class="mb-4">
+                                <div class="d-inline-flex align-items-center justify-content-center rounded" style="width: 48px; height: 48px; background-color: #e6f4ea; color: #1A3D2B;">
+                                    <i class="ti ti-eye fs-4"></i>
+                                </div>
+                            </div>
+                            <h4 class="fw-bold mb-3" style="color: #0b1a12;">Transparency</h4>
+                            <p class="mb-0" style="color: #55695e; line-height: 1.6;">
+                                Real-time tracking of every complaint ensures that every resident is kept in the loop regarding their concerns.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="card h-100 p-4 p-lg-5 text-start core-value-card">
+                            <div class="mb-4">
+                                <div class="d-inline-flex align-items-center justify-content-center rounded" style="width: 48px; height: 48px; background-color: #e6f4ea; color: #1A3D2B;">
+                                    <i class="ti ti-shield-check fs-4"></i>
+                                </div>
+                            </div>
+                            <h4 class="fw-bold mb-3" style="color: #0b1a12;">Accountability</h4>
+                            <p class="mb-0" style="color: #55695e; line-height: 1.6;">
+                                Every action taken is logged and auditable, ensuring that the Barangay leadership maintains the highest standards of service.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <i class="ti ti-arrow-right hac-arrow"></i>
-        </a>
-    </div>
-</div>
+        </section>
+
+        <!-- 3. SIMPLIFIED PROCESS & CTA SECTION -->
+        <section class="section-light pt-5 pb-0">
+            <div class="container pt-4">
+                
+                <div class="row justify-content-center mb-5">
+                    <div class="col-lg-8 col-xl-7">
+                        <h3 class="fw-bold mb-5" style="color: #0b1a12;">Simplified Process for Every Citizen</h3>
+                        
+                        <div class="d-flex mb-4 align-items-start">
+                            <div class="flex-shrink-0">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm" style="width: 32px; height: 32px; background-color: #1A3D2B;">1</div>
+                            </div>
+                            <div class="ms-4">
+                                <h5 class="fw-bold mb-2" style="color: #0b1a12;">Submit your concern</h5>
+                                <p class="mb-0" style="color: #55695e;">Fill out a simple form detailing the issue, location, and supporting media.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-4 align-items-start">
+                            <div class="flex-shrink-0">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm" style="width: 32px; height: 32px; background-color: #1A3D2B;">2</div>
+                            </div>
+                            <div class="ms-4">
+                                <h5 class="fw-bold mb-2" style="color: #0b1a12;">Barangay review & action</h5>
+                                <p class="mb-0" style="color: #55695e;">Officials evaluate the complaint and assign the necessary resources to resolve it.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-5 align-items-start">
+                            <div class="flex-shrink-0">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm" style="width: 32px; height: 32px; background-color: #1A3D2B;">3</div>
+                            </div>
+                            <div class="ms-4">
+                                <h5 class="fw-bold mb-2" style="color: #0b1a12;">Resolution update</h5>
+                                <p class="mb-0" style="color: #55695e;">System updated once the concern has been successfully addressed.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center pb-5">
+                    <div class="col-lg-10">
+                        <div class="p-5 text-center text-white shadow-lg" style="background-color: #0b1a12; border-radius: 24px;">
+                            <h2 class="fw-bold mb-3">Shape the Future of Our Barangay</h2>
+                            <p class="mb-5 mx-auto" style="max-width: 650px; color: #a3b8ad; font-size: 1.1rem;">
+                                Your participation is vital for community improvement. Join hundreds of residents in making Barangay 67 a model for local governance.
+                            </p>
+                            <a href="/Account/Register" class="btn fw-bold px-5 py-3 btn-cta">
+                                Start Filing Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+    </main>
+
+    <!-- 4. FOOTER -->
+    <footer class="py-5" style="background-color: #f4f7fe;">
+        <div class="container py-3">
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="~/images/vanguard-landing.png" alt="Vanguard CMS" height="40" />
+                    </div>
+                    <p class="mb-4" style="color: #55695e; font-size: 1.05rem; line-height: 1.6;">
+                        The official digital complaint management platform for Barangay 67. We are committed to service, transparency, and the continuous improvement of our community environment.
+                    </p>
+                    
+                    <hr style="border-color: #d1d9e6;" />
+                    
+                    <p class="mb-0 pt-2" style="color: #8c9c94; font-size: 0.9rem;">
+                        &copy; @DateTime.Now.Year Barangay 67 Vanguard CMS. Service above all.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

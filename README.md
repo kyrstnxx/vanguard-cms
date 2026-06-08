@@ -26,7 +26,7 @@ Follow these steps to get Vanguard CMS running on your local machine.
 
 ### Prerequisites
 * SQL Server
-* Visual Studio 2022
+* Visual Studio 2026
 
   
 ### Installation

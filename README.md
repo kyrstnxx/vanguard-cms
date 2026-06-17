@@ -68,28 +68,31 @@ When contributing to Vanguard CMS, please follow this standard Git workflow to k
 
 - Get the Latest Changes
 
-Always pull the latest code from the repository before starting new work:
+  Always pull the latest code from the repository before starting new work:
 ```Bash
 git pull origin main
 ```
 
-- Create a New Branch 
-Never work directly on the main branch. Create a new branch for your specific feature or bug fix:
+- Create a New Branch
+
+  Never work directly on the main branch. Create a new branch for your specific feature or bug fix:
 
 ```Bash
 # Replace 'feature-name' with a descriptive name (e.g., add-login-UI)
 git checkout -b feature-name
 ```
 
-- Save and Commit Your Work 
-Once you have made your changes, stage and commit them with a clear, descriptive message:
+- Save and Commit Your Work
+
+  Once you have made your changes, stage and commit them with a clear, descriptive message:
 ```Bash
 git add .
 git commit -m "Added the resident dashboard interface"
 ```
 
 - Push Your Branch
-Push your new branch up to GitHub:
+
+  Push your new branch up to GitHub:
 ```Bash
 git push -u origin feature-name
 ```
